@@ -13,13 +13,12 @@ class Server:
         self.sock.listen()
         while True:
             conn, _ = self.sock.accept()
-            serving_thr = threading.Thread(target=self.serve_client, args=(conn,))
-            serving_thr.start()
-            serving_thr.join()
+            client_thr = threading.Thread(target=self.serve_client, args=(conn,))
+            client_thr.start()
+            client_thr.join()
 
     def serve_client(self, client_sock: socket.socket):
         while True:
-            data = client_sock.recv(1024)
-            if not data:
-                break
-            client_sock.sendall(data)
+            data = client_sock.recv(4096)
+            if data:
+                client_sock.sendall(data)
