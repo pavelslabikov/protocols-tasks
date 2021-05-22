@@ -23,9 +23,7 @@ class IcmpPacket:
         return checksum ^ 0xffff
 
     def __bytes__(self) -> bytes:
-        icmp_type = 8
-        icmp_code = 0
-        mock_data = struct.pack('!BBH', icmp_type, icmp_code, 0)
+        mock_data = struct.pack('!BBH', self.type, self.code, 0)
         current_sum = self.get_checksum(mock_data)
-        return struct.pack('!BBHHH', icmp_type, icmp_code,
+        return struct.pack('!BBHHH', self.type, self.code,
                            current_sum, 1, random.randint(256, 3000))
